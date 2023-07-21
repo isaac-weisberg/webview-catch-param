@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<head>
+    <title>Inject me, senpai</title>
+    <meta charset=utf-8>
+    <meta name="description" content="What happens when I get injected... with cum">
+    <meta name="author" content="Isaac Weisberg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#FFFFFF" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/iljournalier/iljourn-ico144x144.jpg">
+</head>
+
+<body>
+    <div id="App"></div>
+
+    <script>
+        function readInjectedId() {
+            const whereToLookForId = 'fooSsoId'
+
+            const value = window[whereToLookForId]
+
+            return value
+        }
+
+        function createElementThatReadsId(seconds) {
+            const div = document.createElement('div')
+
+            let label
+            if (seconds === undefined) {
+                label = `Immediate read`
+            } else {
+                label = `Read after timeout ${seconds}`
+            }
+
+            div.textContent = `${label}, WAITING!`
+
+            function readIdAndChangeValue() {
+                const value = readInjectedId()
+
+                let text
+                if (value === undefined || value === null) {
+                    text = `${label}, It equals = ${value}`
+                } else if (value == "") {
+                    text = `${label}, It equals = <empty string>`
+                } else {
+                    text = `${label}, It equals = ${value.toString()}`
+                }
+
+                div.textContent = text
+            }
+
+            if (seconds === undefined) {
+                readIdAndChangeValue()
+            } else {
+                setTimeout(() => {
+                readIdAndChangeValue()
+                }, seconds * 1000)
+            }
+
+            console.log("Scheduling for ", seconds * 1000)
+
+            return div
+        }
+
+
+        const app = document.getElementById('App')
+
+        const timeouts = [undefined, 0, 0.25, 1, 2, 3] // seconds, undefined means "immediately"
+    
+        timeouts.forEach((timeout) => {
+            const div = createElementThatReadsId(timeout)
+
+            app.appendChild(div)
+        })
+    </script>
+</body>
