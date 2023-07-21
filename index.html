@@ -13,9 +13,9 @@
     <div id="App"></div>
 
     <script>
-        function readInjectedId() {
-            const whereToLookForId = 'fooSsoId'
+        const whereToLookForId = 'fooSsoId'
 
+        function readInjectedId() {
             const value = window[whereToLookForId]
 
             return value
@@ -64,12 +64,16 @@
 
         const app = document.getElementById('App')
 
+        const whatKeyNode = document.createElement('div')
+        whatKeyNode.textContent = `We are reading \`window.${whereToLookForId}\``
+        app.appendChild(whatKeyNode)
+
         const timeouts = [undefined, 0, 0.25, 1, 2, 3] // seconds, undefined means "immediately"
-    
         timeouts.forEach((timeout) => {
             const div = createElementThatReadsId(timeout)
 
             app.appendChild(div)
         })
+
     </script>
 </body>
